@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'roles'
     ];
 
     /**
@@ -43,5 +44,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function isAdmin()
+    {
+        return $this->roles === 'admin';
+    }
+
+    public function getRoleNameAttribute()
+    {
+        return ucfirst($this->roles);  // Tegyük fel, hogy a 'role' a szerepkört tárolja.
     }
 }
