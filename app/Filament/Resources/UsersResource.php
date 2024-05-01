@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Hash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
@@ -24,37 +25,40 @@ class UsersResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
     public static function form(Form $form): Form
-    {
-        return $form->schema([
-            TextInput::make('name')
-                ->label(__('Name'))
-                ->required()
-                ->maxLength(255),
+{
+    return $form->schema([
+        TextInput::make('name')
+            ->label(__('Name'))
+            ->required()
+            ->maxLength(255),
 
-            TextInput::make('email')
-                ->label(__('Email'))
-                ->email()
-                ->required()
-                ->unique(User::class, 'email'),
+        TextInput::make('email')
+            ->label(__('Email'))
+            ->email()
+            ->required()
+            ->unique(User::class, 'email', ignoreRecord: true),
 
-            TextInput::make('password')
-                ->label(__('Password'))
-                ->password()  // This will make the input type suitable for passwords
-                ->required()
-                ->minLength(8)  // Ensure a minimum length for security
-                ->maxLength(255),
+        TextInput::make('password')
+            ->label(__('Password'))
+            ->password()
+            ->minLength(8)
+            ->maxLength(255)
+            ->required(fn ($livewire) => $livewire instanceof Pages\CreateUsers)  // Required only on create page
+            ->dehydrated(fn ($state) => filled($state))  // Only update if field is filled
+            ->dehydrateStateUsing(fn ($state) => Hash::make($state)),  // Hash password before saving
 
-            Select::make('roles')
-                ->label(__('Role'))
-                ->options([
-                    'admin' => __('admin'),
-                    'employee' => __('employee'),
-                    // Add more roles if necessary
-                ])
-                ->required()
-                ->default('employee'),
-        ]);
-    }
+        Select::make('roles')
+            ->label(__('Role'))
+            ->options([
+                'admin' => __('admin'),
+                'employee' => __('employee'),
+                // Add more roles if necessary
+            ])
+            ->required()
+            ->default('employee'),
+    ]);
+}
+
     
 
     public static function table(Table $table): Table

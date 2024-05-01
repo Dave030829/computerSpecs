@@ -53,6 +53,6 @@ class User extends Authenticatable
 
     public function getRoleNameAttribute()
     {
-        return ucfirst($this->roles);  // Tegyük fel, hogy a 'role' a szerepkört tárolja.
+        return ucfirst($this->roles);
     }
 }
