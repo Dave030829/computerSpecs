@@ -44,7 +44,6 @@ class MonitorsResource extends Resource
         //'name','resolution', 'Hz', 'brightness', 'panel_type', 'smart', 'power_consumption'
         return $table
             ->columns([
-                //TextColumn::make('id')->label(__('ID'))->searchable()->sortable(),
                 TextColumn::make('name')->label(__('Name'))->searchable()->sortable(),
                 TextColumn::make('price')->label(__('Price'))->searchable()->sortable(),
                 TextColumn::make('Hz')->label(__('Hz'))->searchable()->sortable(),
@@ -67,7 +66,6 @@ class MonitorsResource extends Resource
                         $name => !$record->$name
                 ]);
                 }),
-                //TextColumn::make('power_consumption')->label(__('Power Consumption'))->searchable()->sortable()
             ])
             ->filters([
                 //

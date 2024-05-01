@@ -3,9 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LaptopsResource\Pages;
-use App\Filament\Resources\LaptopsResource\RelationManagers;
 use App\Models\Laptops;
-use Filament\Forms;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,13 +12,12 @@ use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Storage;
-use Barryvdh\DomPDF\Facade as PDF;
+
+
 
 class LaptopsResource extends Resource
 {
@@ -129,15 +126,15 @@ class LaptopsResource extends Resource
                 ->sortable()
                 ->toggleable(true),
 
-            TextColumn::make('price')
+                TextColumn::make('price')
                 ->label(__('Price'))
                 ->searchable()
                 ->sortable()
                 ->toggleable(true)
                 ->html()
                 ->formatStateUsing(function ($state) {
-                    return "<span>{$state} HUF</span>";
-                }),
+                    return "<span>" . number_format($state, 0, '.', ',') . " HUF</span>";
+                }),            
 
             TextColumn::make('in_stock')
                 ->label(__('In Stock'))

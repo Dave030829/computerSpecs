@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class MobilePhones extends Model
 {
-    protected $fillable = ['name','processor', 'gpu', 'ram', 'storage_type', 'storage_size', 'boot_time', 'os', 'cinebench_score', 'power_consumption'];
-
+    protected $fillable = ['name','price', 'processor', 'gpu', 'ram', 'storage_type','storage_size'
+    ,'boot_time', 'in_stock','os','available'];
 }
